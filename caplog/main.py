@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import argparse
-from JournalEntry import get_session, save_entry, display_entries
-from JournalEntry import JournalEntry
+from caplog.JournalEntry import get_session, save_entry, display_entries
+from .JournalEntry import JournalEntry
 
 
 # Define a custom type for the time argument
@@ -19,25 +19,21 @@ def time_type(string):
             raise argparse.ArgumentTypeError(f'Invalid time: {string}')
 
 
-# Create an ArgumentParser object
-parser = argparse.ArgumentParser()
+def main():
+    # Create an ArgumentParser object
+    parser = argparse.ArgumentParser()
 
-# Add arguments and options to the parser
-parser.add_argument('time', nargs='?', type=time_type, help='The time of the journal entry (today or yesterday)')
-parser.add_argument('entry', nargs='*', help='The journal entry (title and body)')
-parser.add_argument('-l', '--list', action='store_true', help='List all journal entries')
+    # Add arguments and options to the parser
+    parser.add_argument('time', nargs='?', type=time_type, help='The time of the journal entry (today or yesterday)')
+    parser.add_argument('entry', nargs='*', help='The journal entry (title and body)')
+    parser.add_argument('-l', '--list', action='store_true', help='List all journal entries')
 
-# Parse the command-line arguments and options
-args, unknown_args = parser.parse_known_args()
+    # Parse the command-line arguments and options
+    args = parser.parse_args()
 
-# Check if no arguments were provided
-if not unknown_args and not any(vars(args).values()):
-    parser.print_help()
-else:
     time = args.time
     entry = ' '.join(args.entry)
     list_entries = args.list
-    # Print the help message if the --help flag is provided
     
     # Split the entry into a title and body
     if entry:
@@ -52,4 +48,7 @@ else:
     else:
         #create_stuff
         entry = JournalEntry(title=title, body=body, created_at=time)
-        print(entry)
+        save_entry(entry)
+
+if __name__ == '__main__':
+    main()
