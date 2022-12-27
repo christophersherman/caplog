@@ -22,7 +22,7 @@ class JournalEntry(Base):
         self.created_at = created_at
 
     def __repr__(self):
-        return f'<JournalEntry(title={self.title}, body'
+        return f'<JournalEntry(title={self.title}, {self.body}, {self.created_at}'
 
 
 def get_session():
