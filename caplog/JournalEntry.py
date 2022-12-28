@@ -14,15 +14,17 @@ class JournalEntry(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(50))  # Specify a length of 50 characters for the title column
     body = Column(String(2000))
+    tags = Column(String(200))
     created_at = Column(DateTime)
 
-    def __init__(self, title, body, created_at):
+    def __init__(self, title, body, tags, created_at):
         self.title = title
         self.body = body
+        self.tags = tags
         self.created_at = created_at
 
     def __repr__(self):
-        return f'<JournalEntry(title={self.title}, {self.body}, {self.created_at}'
+        return f'<JournalEntry(title={self.title}, {self.body}, {self.tags}, {self.created_at}'
 
 
 def get_session():
@@ -47,7 +49,6 @@ def save_entry(entry):
 def display_entries():
     # Get a session to the database
     session = get_session()
-
     # Execute a SELECT statement to retrieve all the journal entries
     entries = session.query(JournalEntry).all()
 
