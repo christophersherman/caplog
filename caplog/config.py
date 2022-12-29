@@ -9,6 +9,6 @@ def set_database_url():
 
     # Set the DATABASE_URL environment variable based on the current Git branch
     if branch == 'develop':
-        os.environ['DATABASE_URL'] = open('../config/dev.env').read().strip()
+        os.environ['DATABASE_URL'] = open('config/dev.env').read().strip()
     else:
-        os.environ['DATABASE_URL'] = open('../config/prod.env').read().strip()
+        os.environ['DATABASE_URL'] = open('config/prod.env').read().strip()

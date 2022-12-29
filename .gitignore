@@ -1,3 +1,4 @@
 build/
 caplog.egg-info/
 config/
+dist/

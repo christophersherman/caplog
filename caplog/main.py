@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 import re
 import argparse
-from JournalEntry import get_session, save_entry, display_entries
-from JournalEntry import JournalEntry
+from journalentry import save_entry, display_entries, JournalEntry
 
 
 # Define a custom type for the time argument
