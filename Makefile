@@ -1,3 +1,6 @@
+test:
+	/usr/bin/python3 /Users/sherm/Library/Python/3.9/lib/python/site-packages/pytest tests/
+
 build:
 	/usr/bin/python3 /Users/sherm/Library/Python/3.9/lib/python/site-packages/pyinstaller main.spec
 
