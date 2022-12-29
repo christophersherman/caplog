@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, DateTime
-
+import config, os
 # Create a Base object for the ORM
 Base = declarative_base()
 
@@ -28,8 +28,13 @@ class JournalEntry(Base):
 
 
 def get_session():
-    # Connect to the database
-    engine = create_engine('mysql://user:@127.0.0.1:3306/test')
+    # Call the set_database_url function in config.py
+    config.set_database_url()
+
+    # Use the DATABASE_URL environment variable in your code
+    database_url = os.environ['DATABASE_URL']
+
+    engine = create_engine(database_url)
 
     # Create the journal_entries table in the database if it does not exist
     Base.metadata.create_all(engine)
