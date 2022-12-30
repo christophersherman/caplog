@@ -11,7 +11,7 @@ Base = declarative_base()
 
 class JournalEntry(Base):
     __tablename__ = 'journal_entries'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, default=None)
     title = Column(String(50))  # Specify a length of 50 characters for the title column
     body = Column(String(2000))
     tags = Column(String(200))
@@ -33,7 +33,10 @@ def get_session():
 
     # Use the DATABASE_URL environment variable in your code
     database_url = os.environ['DATABASE_URL']
-
+    testing_flag = os.getenv('TESTING', None)
+    # If a database_name is specified, modify the database URL to connect to that database
+    if testing_flag is not None:
+        database_url = database_url = os.environ['TESTING_URL']
     engine = create_engine(database_url)
 
     # Create the journal_entries table in the database if it does not exist
@@ -50,6 +53,20 @@ def save_entry(entry):
     session = get_session()
     session.add(entry)
     session.commit()
+
+def remove_entry(entry_id):
+    # Get a session to the database
+    session = get_session()
+    # Retrieve the journal entry with the specified ID
+    entry = session.query(JournalEntry).filter_by(id=entry_id).first()
+    # If the entry was found, delete it from the database
+    if entry:
+        session.delete(entry)
+        session.commit()
+    session.close()
+
+ 
+
 
 def display_entries():
     # Get a session to the database
