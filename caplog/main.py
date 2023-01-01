@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-import re
-import argparse
+import argparse, re, json
 from journalentry import save_entry, display_entries, JournalEntry
 
 
@@ -24,6 +23,15 @@ def scrape_tags(string):
     # Return the list of tags as a comma-separated string, or an empty string if no tags were found
     return ','.join(tags) if tags else ''
 
+def export_to_json(entries=None, file_path=None): # i want this to export to a usable file location, and show the user an exerpt of the total printout to the consol 
+                                        # make the file name an input? print location to user? ask user for location?
+    # Convert the entries to a list of dictionaries
+    entries_dict = [entry.__dict__ for entry in entries]
+    # Convert the list of dictionaries to a JSON string
+    json_string = json.dumps(entries_dict)
+    # Write the JSON string to the file
+    with open(file_path, 'w') as f:
+        f.write(json_string)
 
 def main():
     # Create an ArgumentParser object
@@ -33,6 +41,7 @@ def main():
     parser.add_argument('time', nargs='?', type=time_type,  help='The time of the journal entry (today or yesterday)')
     parser.add_argument('entry', nargs='*',  help='The journal entry (title and body)')
     parser.add_argument('-l', '--list', action='store_true', help='List all journal entries')
+    parser.add_argument('-e', '--export', action='', help='export the journal contents in json format')
 
     # Parse the command-line arguments and options
     args = parser.parse_args()
@@ -46,8 +55,12 @@ def main():
     time = args.time
     entry = ' '.join(args.entry)
     list_entries = args.list
-    
+    export = args.export
+    #how to get export's type? json/txt? any others?
+
     # Split the entry into a title and body
+    if export:
+        export_to_json()
     if entry:
         title, body = entry.split('.', 1)
         title = title+'.'
@@ -57,7 +70,7 @@ def main():
 
     # Use the parsed arguments and options in your script
     if list_entries:
-        display_entries()
+        display_entries() #todo
     else:
         #create_stuff
         entry = JournalEntry(title=title, body=body, tags=tags, created_at=time)
