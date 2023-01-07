@@ -2,3 +2,4 @@ build/
 caplog.egg-info/
 config/
 dist/
+.pytest_cache
